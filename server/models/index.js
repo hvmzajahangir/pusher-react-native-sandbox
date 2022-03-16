@@ -12,11 +12,16 @@ const DB_HOST = process.env.DB_HOST;
 const DB_NAME = process.env.DB_NAME;
 const CONNECTION_STRING = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`;
 
+const PUSHER_APP_ID = process.env.PUSHER_APP_ID;
+const PUSHER_KEY = process.env.PUSHER_KEY;
+const PUSHER_SECRET = process.env.PUSHER_SECRET;
+const PUSHER_CLUSTER = process.env.PUSHER_CLUSTER;
+
 const pusher = new Pusher({
-  appId: "1360488",
-  key: "10b8f07c1a28d2afe9d3",
-  secret: "5d81fab2ca4d3eab2f61",
-  cluster: "eu",
+  appId: PUSHER_APP_ID,
+  key: PUSHER_KEY,
+  secret: PUSHER_SECRET,
+  cluster: PUSHER_CLUSTER,
   useTLS: true,
 });
 
@@ -37,6 +42,7 @@ db.once("open", () => {
       pusher.trigger("messages", "inserted", {
         name: messageDetails.name,
         message: messageDetails.message,
+        received: messageDetails.received,
       });
     }
   });
